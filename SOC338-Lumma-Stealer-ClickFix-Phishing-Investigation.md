@@ -14,6 +14,8 @@ Investigated a phishing campaign impersonating Microsoft Windows Update. The vic
 ### 1. Email Analysis
 
 Identified a phishing email from `update@windows-update.site` targeting `dylan@letsdefend.io`. The email directed the victim to `windows-update.site`, which VirusTotal flagged as malicious (10/93 vendors).
+<img width="1574" height="547" alt="338-01-alert" src="https://github.com/user-attachments/assets/61a9f5b3-0b6c-4ebc-aecb-e02591db73f3" />
+
 
 ### 2. Endpoint Analysis
 
