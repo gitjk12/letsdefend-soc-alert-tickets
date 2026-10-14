@@ -43,6 +43,9 @@ The email impersonated Microsoft, used a fake countdown timer for urgency, and p
 
 Browser history confirms the visit to `windows-update.site` at 23:26:08.
 
+
+<img width="544" height="406" alt="SOC-338-secondpage" src="https://github.com/user-attachments/assets/c9d45ebd-e44f-4881-bd11-4c5519bc7533" />
+
 <img width="1547" height="714" alt="338-history" src="https://github.com/user-attachments/assets/46830a24-ec85-41dc-b824-423b69ec3920" />
 
 At 23:26:19, the user ran the ClickFix command from the Run dialog:
