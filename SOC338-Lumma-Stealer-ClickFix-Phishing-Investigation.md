@@ -44,7 +44,6 @@ The email impersonated Microsoft, used a fake countdown timer for urgency, and p
 Browser history confirms the visit to `windows-update.site` at 23:26:08.
 
 
-<img width="544" height="406" alt="SOC-338-secondpage" src="https://github.com/user-attachments/assets/c9d45ebd-e44f-4881-bd11-4c5519bc7533" />
 
 <img width="1547" height="714" alt="338-history" src="https://github.com/user-attachments/assets/46830a24-ec85-41dc-b824-423b69ec3920" />
 
@@ -72,7 +71,7 @@ userinit.exe
          └─ mshta.exe (PID 7284)      fetches the payload
             └─ conhost.exe
 ```
-
+<img width="544" height="406" alt="SOC-338-secondpage" src="https://github.com/user-attachments/assets/f40432b4-2952-450b-8342-f7762f1d9393" />
 <img width="560" height="447" alt="SOC338-ProcessesView" src="https://github.com/user-attachments/assets/dc098e5e-c703-4a43-b96f-da40394efbdb" />
 <img width="707" height="167" alt="SOC338-PS624" src="https://github.com/user-attachments/assets/8159e2fb-5375-42c4-b1b2-77b1736d4014" />
 <img width="675" height="205" alt="SOC338-PS7308" src="https://github.com/user-attachments/assets/87d18735-339a-422d-b7d3-17eac6aa18ea" />
