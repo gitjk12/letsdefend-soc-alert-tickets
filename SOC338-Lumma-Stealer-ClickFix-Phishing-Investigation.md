@@ -77,7 +77,7 @@ Firewall logs show `mshta.exe` (PID 7284) making an allowed HTTPS connection fro
 
 ## Recommendations
 
-Contain and reimage the host, reset the user's credentials and revoke active sessions (Lumma targets saved passwords and cookies), block the IOCs, and train users that legitimate sites never ask them to paste commands into the Run dialog.
+Host `172.16.17.216` was contained. Next steps: reimage the host, reset the user's credentials and revoke active sessions (Lumma targets saved passwords and cookies), block the IOCs, and train users that legitimate sites never ask them to paste commands into the Run dialog.
 
 ## Conclusion
 
