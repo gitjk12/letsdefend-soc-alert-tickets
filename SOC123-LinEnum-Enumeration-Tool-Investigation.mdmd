@@ -7,7 +7,7 @@
 
 gitServer downloaded **LinEnum**, a Linux privilege-escalation enumeration script, from GitHub. The script was renamed to a random filename in `/tmp`, made executable, and run. Eight days later, the same server was hit by an LFI attempt and a working web shell. See the related investigation: [SOC129 – Successful Local File Inclusion](SOC129-Local-File-Inclusion-Web-Shell-Investigation.md).
 
-[SCREENSHOT: SOC123 alert expanded on the Monitoring page]
+
 
 ## The Attack
 
