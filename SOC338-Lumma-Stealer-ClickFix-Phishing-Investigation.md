@@ -7,7 +7,8 @@
 
 A spoofed email from `bill@microsoft.com` delivered a password-protected zip containing an HTML credential-phishing page that impersonated a Microsoft login. The email was deleted, and no evidence showed the attachment was opened or credentials were submitted.
 
-[DRAG 01-alert-details.png HERE]
+<img width="953" height="284" alt="01-alert-details" src="https://github.com/user-attachments/assets/5f79b726-9b48-48ae-b5ac-102279f83827" />
+
 
 ## The Attack
 
@@ -36,17 +37,20 @@ The **password-protected zip** (password `infected`) adds another layer: email g
 
 The sender address claims to be Microsoft, but the sending IP is not Microsoft infrastructure, so the sender is spoofed. A one-character subject, an empty body, and an encrypted attachment are all common phishing traits.
 
-[DRAG 02-email-security.png HERE]
+<img width="1577" height="878" alt="02-email-security" src="https://github.com/user-attachments/assets/a45ba372-b04b-4515-be19-2f4f8e3e51b6" />
+
 
 ### 2. Attachment Analysis
 
 The zip contains `Ellie@letsdefend.io_63963965Application.HTML`, a fake Microsoft login page personalized with the recipient's address. VirusTotal flagged it as malicious (27/60), with detections including `phishing.hidden/akgpp` and `Trojan.HTML.Hidden.2.Gen`.
 
-[DRAG 03-virustotal-html.png HERE]
+<img width="1918" height="982" alt="03-virustotal-html" src="https://github.com/user-attachments/assets/5997535a-3a69-4612-9c87-be3bf0995795" />
+
 
 The download URL scored 6/92, but that result reflects LetsDefend's download wrapper page (`text/html`, 2.24 KB), not the attachment itself.
 
-[DRAG 04-virustotal-url.png HERE]
+<img width="1915" height="986" alt="04-virustotal-url" src="https://github.com/user-attachments/assets/c01cd12c-5e3e-494a-93a1-02fe31037fe0" />
+
 
 Most of the file's contacted hosts were background traffic any browser generates in a sandbox, identified by their Autonomous System numbers:
 
@@ -60,21 +64,26 @@ Most of the file's contacted hosts were background traffic any browser generates
 
 Dropbox stood out: a clean browser has no reason to contact Dropbox's file-download domain, and it was the only domain with vendor detections (3/92). The page most likely loaded phishing content from it. Because Dropbox is a legitimate service, its IPs were treated as leads to check rather than confirmed malicious indicators.
 
-[DRAG 05-virustotal-relations.png HERE]
+<img width="1918" height="952" alt="05-virustotal-relations" src="https://github.com/user-attachments/assets/b88010a1-4733-4b11-ad70-c993a3c1e58f" />
+
 
 ### 3. Endpoint and Log Analysis
 
 Endpoint Security has no host matching Ellie, so there was no device to inspect or contain.
 
-[DRAG 06-endpoint-security.png HERE]
+<img width="1915" height="949" alt="06-endpoint-security" src="https://github.com/user-attachments/assets/f93cdd80-795f-4b1d-ab5d-512a4149860d" />
+
 
 Log Management searches across all time returned 0 events for the sender address, the sender IP, and the contacted Dropbox IP. No traffic shows the attachment being opened.
 
-[DRAG 07-logs-sender-address.png HERE]
+<img width="1913" height="983" alt="07-logs-sender-address" src="https://github.com/user-attachments/assets/6b1633d6-1372-4687-9a83-d8e065feb6ad" />
 
-[DRAG 08-logs-sender-ip.png HERE]
 
-[DRAG 09-logs-dropbox-ip.png HERE]
+<img width="1913" height="901" alt="08-logs-sender-ip" src="https://github.com/user-attachments/assets/a56c505a-606f-4940-8b3e-c80f9c9872bd" />
+
+<img width="1914" height="794" alt="09-logs-dropbox-ip" src="https://github.com/user-attachments/assets/32676b92-fdb8-40de-82cd-dc24ae3973d9" />
+
+
 
 ## Indicators of Compromise
 
