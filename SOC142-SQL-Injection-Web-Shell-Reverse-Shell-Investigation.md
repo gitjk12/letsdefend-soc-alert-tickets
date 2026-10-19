@@ -7,7 +7,8 @@
 
 An external IP sent a series of SQL injection probes to SQLServer, producing multiple HTTP 500 errors. The attacker then used SQL injection to write a PHP web shell to the server, ran commands through it, and launched a reverse shell back to their own machine. Network logs, firewall logs, and endpoint terminal history all confirm the compromise. SQLServer was contained.
 
-[SCREENSHOT: SOC142 alert expanded on the Monitoring page]
+<img width="1249" height="371" alt="01-alert-details" src="https://github.com/user-attachments/assets/b9f9fdcd-bcdc-4ca0-b593-4de0ab875dab" />
+
 
 ## The Attack
 
@@ -39,15 +40,18 @@ A **reverse shell** makes the compromised server connect out to the attacker and
 
 A search for `101.32.223.119` as the source returned 10 events. Four SQL injection probes returned **500**, matching the alert. The `INTO OUTFILE` request returned **200**, and every following request to `cmd.php` also returned **200**, showing the web shell was created and working.
 
-[SCREENSHOT: Log Management, `Source Address contains "101.32.223.119"`, top of results showing nc, firewall entry, and cmd.php requests]
+<img width="1666" height="358" alt="02-logs-source-top-nc-cmd" src="https://github.com/user-attachments/assets/7b3aa314-869c-418e-895f-c91c8b91c665" />
 
-[SCREENSHOT: Log Management, same search, lower results showing the 500 probes and the INTO OUTFILE request]
+
+<img width="1303" height="358" alt="03-logs-source-500-probes-outfile" src="https://github.com/user-attachments/assets/a9d46c36-62ae-4cd6-8eca-9bff3aafd885" />
+
 
 ### 2. Outbound Connection
 
 A search for `101.32.223.119` as the destination returned two firewall entries from SQLServer port 1774 to the attacker's port 1234. An internal device initiated a connection to the attacker's IP, so the playbook answer is **Accessed**.
 
-[SCREENSHOT: Log Management, `Destination Address contains "101.32.223.119"`, two firewall entries]
+<img width="1694" height="708" alt="04-logs-destination-reverse-shell" src="https://github.com/user-attachments/assets/179b62bf-bd40-40a9-bced-43c97c5bbe71" />
+
 
 ### 3. URL Analysis
 
@@ -65,7 +69,8 @@ SQLServer's terminal history confirms the commands executed, matching the networ
 
 Two hours later, at 15:01–15:02, `apt show postgresql` and `sudo apt install postgresql postgresql-contrib` ran. These repeat setup commands from 09:13–09:15 that look like normal administration, but because they ran after the reverse shell and used `sudo`, they should be reviewed to rule out attacker activity with elevated privileges.
 
-[SCREENSHOT: Endpoint Security, SQLServer Terminal History, showing Host Contained]
+<img width="1916" height="892" alt="05-sqlserver-terminal-history-contained" src="https://github.com/user-attachments/assets/7a512072-4c9c-4ba9-b9fa-2b116b683772" />
+
 
 ## Artifacts
 
