@@ -7,7 +7,8 @@
 
 An internal host sent a UNION-based SQL injection request to the internal git server, and the firewall allowed it. The payload was genuine, but every detail of the source points to an authorized penetration test, so the alert was closed as a false positive with no containment required.
 
-[DRAG alert-details screenshot HERE]
+<img width="1272" height="338" alt="01-alert-details" src="https://github.com/user-attachments/assets/de1130d6-dd8f-42cb-bbcb-7744439233a5" />
+
 
 ## The Attack
 
@@ -52,7 +53,8 @@ No legitimate user sends SQL statements in a URL parameter, so the payload is ma
 
 A Log Management search for `172.16.20.5` found exactly one matching request: an allowed GET to `172.16.20.4:443` with the same payload. The log contains no HTTP status code or response size, so it shows the request reached gitServer but not whether the injection succeeded.
 
-[DRAG log-management screenshot HERE]
+<img width="1589" height="575" alt="02-logs-source-address-sqli-request" src="https://github.com/user-attachments/assets/d3d21d0c-9649-4526-a652-57e8cc2a8a26" />
+
 
 Other activity from the same host fits a penetration-testing machine: a download of the BloodHound Active Directory mapping tool (2021-03-15) and SSH connections to port 22 on several internal hosts (2021-06-13).
 
