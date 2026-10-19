@@ -5,8 +5,9 @@
 
 ## Summary
 
-gitServer downloaded **LinEnum**, a Linux privilege-escalation enumeration script, from GitHub. The script was renamed to a random filename in `/tmp`, made executable, and run. Eight days later, the same server was hit by an LFI attempt and a working web shell. See the related investigation: [SOC129 – Successful Local File Inclusion](SOC129-Local-File-Inclusion-Web-Shell-Investigation.md).
+gitServer downloaded **LinEnum**, a Linux privilege-escalation enumeration script, from GitHub. The script was renamed to a random filename in `/tmp`, made executable, and run. Eight days later, the same server was hit by an LFI attempt and a working web shell. See the related investigation: 
 
+<img width="1619" height="383" alt="01-alert-details" src="https://github.com/user-attachments/assets/45390ca3-75cd-42af-aabd-e665b6b3a5a6" />
 
 
 ## The Attack
@@ -30,19 +31,22 @@ gitServer downloaded **LinEnum**, a Linux privilege-escalation enumeration scrip
 
 The proxy logged an allowed HTTPS connection from `172.16.20.4:44221` to `185.199.109.133:443` (GitHub) for the LinEnum URL. An internal device reached the URL, so the playbook answer is **Accessed**.
 
-[SCREENSHOT: Log Management entry for the LinEnum download]
+<img width="1367" height="249" alt="02-logs-linenum-download" src="https://github.com/user-attachments/assets/98cf5124-d6f8-4f68-990a-fefc0d9f1ef8" />
+
 
 ### 2. URL Analysis
 
 VirusTotal flagged the URL 5/92 (ESET, Fortinet, CTX AI, Lionic, SafeToOpen). The low score is expected for an open-source tool hosted on GitHub; the vendors that flag it identify it as a hacking tool. GitHub itself is legitimate infrastructure, so the content and context make this malicious, not the host.
 
-[SCREENSHOT: VirusTotal result for the LinEnum URL]
+<img width="1919" height="947" alt="03-virustotal-linenum-url" src="https://github.com/user-attachments/assets/85a81048-fda8-4d5c-ae4f-dfcf060616db" />
+
 
 ### 3. Endpoint Analysis
 
 gitServer's terminal history confirms the script was renamed, made executable, and run, not just downloaded.
 
-[SCREENSHOT: Endpoint Security, gitServer Terminal History, 2021-02-13 rows]
+<img width="1289" height="761" alt="04-gitserver-terminal-history" src="https://github.com/user-attachments/assets/acadd995-bbf1-4666-82bf-e94cdb5a9367" />
+
 
 ### 4. Verdict Reasoning
 
