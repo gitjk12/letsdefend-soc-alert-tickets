@@ -7,7 +7,8 @@
 
 An external IP sent a Local File Inclusion request for `/etc/passwd` to gitServer. The server responded **404**, so the LFI the alert reported did not succeed, and LetsDefend grades the alert a false positive. However, the same IP returned the next day and ran commands on gitServer through a web shell, which endpoint terminal history confirms. The server was compromised and was contained.
 
-[SCREENSHOT: SOC129 alert expanded on the Monitoring page]
+<img width="1156" height="364" alt="01-alert-details" src="https://github.com/user-attachments/assets/9653443e-a01a-434a-9bb2-6c0808617f76" />
+
 
 ## The Attack
 
@@ -34,17 +35,20 @@ A **web shell** is a script uploaded to a web server that runs whatever command 
 
 Searching `49.234.71.65` as the **source** returned five requests to gitServer, all allowed by the proxy.
 
-[SCREENSHOT: Log Management, `Source Address contains "49.234.71.65"`, 5 events]
+<img width="1382" height="502" alt="02-logs-source-49 234 71 65" src="https://github.com/user-attachments/assets/91d6f724-b7a7-4beb-ac45-62c6183d2e65" />
+
 
 Searching it as the **destination** returned gitServer's responses: two **404 Not Found** on port 33212, the LFI connection. The LFI failed. No responses were logged for the day-2 requests (port 42212).
 
-[SCREENSHOT: Log Management, `Destination Address contains "49.234.71.65"`, two 404 responses]
+<img width="883" height="524" alt="03-logs-destination-404-responses" src="https://github.com/user-attachments/assets/8a2e3ca7-10cc-4e68-b1b6-bd0c0f193185" />
+
 
 ### 2. Threat Intelligence
 
 `49.234.71.65` belongs to Tencent Cloud (AS45090, China) and shows 0/92 on VirusTotal. Cloud IPs are frequently reassigned and the alert dates to 2021, so the clean result does not reflect the IP's status at the time. The request URL could not be checked, as it points to an internal IP.
 
-[SCREENSHOT: VirusTotal result for 49.234.71.65]
+<img width="1918" height="988" alt="04-virustotal-49 234 71 65" src="https://github.com/user-attachments/assets/c5542089-9f4c-4f87-a457-c98c23abe268" />
+
 
 ### 3. Endpoint Analysis
 
@@ -65,7 +69,8 @@ It also shows earlier, unexplained activity eight days before the alert:
 
 **LinEnum** searches a Linux system for privilege-escalation paths. Saving it under a random-looking name suggests an attempt to avoid notice. Its link to this attacker is unconfirmed.
 
-[SCREENSHOT: Endpoint Security, gitServer Terminal History tab]
+<img width="1289" height="761" alt="05-gitserver-terminal-history" src="https://github.com/user-attachments/assets/62b76cb7-c92e-4e99-85bd-004f3842f7fc" />
+
 
 ## Indicators of Compromise
 
@@ -80,7 +85,8 @@ It also shows earlier, unexplained activity eight days before the alert:
 
 gitServer was contained. Next steps: escalate to incident response, remove `phpshell.php` and `/tmp/ah22idah.sh`, investigate the 2021-02-13 LinEnum activity, restrict or remove `upload.php`, rotate credentials on the server, block `49.234.71.65`, and patch the OS (Ubuntu 16.04.4, out of standard support since April 2021).
 
-[SCREENSHOT: Endpoint Security, gitServer showing Host Contained]
+<img width="1895" height="938" alt="06-gitserver-contained" src="https://github.com/user-attachments/assets/c2222552-1285-4c81-b91d-c0e6506eb159" />
+
 
 ## Conclusion
 
