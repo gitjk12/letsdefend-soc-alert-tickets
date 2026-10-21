@@ -7,7 +7,8 @@
 
 Richard received an "Invoice" email with a password-protected attachment, and the mail gateway allowed it. The attachment is an Excel file that exploits CVE-2017-11882. About 27 minutes after delivery, the Equation Editor process (`EQNEDT32.EXE`), launched from Excel, downloaded `network.exe` from `andaluciabeach.net`, and the proxy allowed the request. The attachment was opened and the exploit ran, so the host is compromised.
 
-![01-alert-details](images/SOC114/01-alert-details.png)
+<img width="1572" height="525" alt="01-alert-details" src="https://github.com/user-attachments/assets/b40cf651-47cf-4826-9bd9-efb1c1afc5d9" />
+
 
 ## The Attack
 
@@ -37,7 +38,8 @@ The usual payload is a small downloader that fetches a second-stage executable f
 
 The body is a generic invoice lure for "shopping you have done," with no order details or business context. `cmail.carleton.ca` is Carleton University's real student mail domain, so this is likely a compromised or abused account rather than a spoofed look-alike.
 
-![02-email-security](images/SOC114/02-email-security.png)
+<img width="1547" height="657" alt="02-email-security" src="https://github.com/user-attachments/assets/8cacb52c-4893-4117-b2d3-a163b838a5be" />
+
 
 ### 2. Attachment Analysis
 
@@ -51,13 +53,15 @@ The Relations tab lists the network activity seen when the sample runs:
 - `pastebin.com`, often used to host payloads or configuration
 - `nexus.officeapps.live.com`, normal Office traffic
 
-![03-virustotal-attachment-relations](images/SOC114/03-virustotal-attachment-relations.png)
+<img width="1886" height="922" alt="03-virustotal-attachment-relations" src="https://github.com/user-attachments/assets/f0766ef3-ecbd-4cd8-b802-a2f4be93ffba" />
+
 
 ### 3. Log Analysis
 
 Searching the attachment hash in Log Management returned nothing, as expected, since network logs record URLs and IPs, not file hashes. Searching for the contacted URL `http://andaluciabeach.net/image/network.exe` found one proxy event: an allowed request from `172.16.17.45:53948` to `5.135.143.133:443`. The process was `EQNEDT32.EXE` with parent `excel.exe`, which matches CVE-2017-11882 exploitation. An internal device reached the C2, so the playbook answer is **Accessed**.
 
-![04-logs-proxy-c2-access](images/SOC114/04-logs-proxy-c2-access.png)
+<img width="1573" height="779" alt="04-logs-proxy-c2-access" src="https://github.com/user-attachments/assets/0119f629-e4e8-44e9-b4fe-5295713b09da" />
+
 
 ### 4. Verdict Reasoning
 
