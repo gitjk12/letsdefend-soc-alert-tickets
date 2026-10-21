@@ -7,7 +7,8 @@
 
 A phishing email with the subject "Its a Must have for your Phone" was delivered to Mark from a free Gmail address. The mail gateway allowed it. About ten minutes after delivery, Mark's machine opened the link in the email, `http://nuangaybantiep.xyz`, through Chrome, and the proxy allowed the connection. Because the user reached the malicious domain, the alert is a true positive and the host requires containment.
 
-![01-alert-details](images/SOC101/01-alert-details.png)
+<img width="1555" height="543" alt="01-alert-details" src="https://github.com/user-attachments/assets/398384b1-11e8-45e9-9401-6966ffcd0077" />
+
 
 ## The Attack
 
@@ -36,7 +37,8 @@ The link points to a newly registered `.xyz` domain. Cheap, disposable domains l
 
 The sender uses a free webmail account with no connection to LetsDefend. The subject and body are a generic product pitch with no business context, and the message directs the user to an external link. These are standard phishing traits.
 
-![02-email-security](images/SOC101/02-email-security.png)
+<img width="1902" height="928" alt="02-email-security" src="https://github.com/user-attachments/assets/8a7c42c2-dc15-436e-a519-909339a6534e" />
+
 
 ### 2. URL Analysis
 
@@ -44,14 +46,17 @@ VirusTotal flagged `http://nuangaybantiep.xyz/` 1/93 (Chong Lua Dao: Malicious).
 
 The low score does not clear the domain. VirusTotal's first submission was **2021-04-04 01:03:24 UTC**, the same day the email was sent, so the domain was brand new at the time of the attack and had not yet built a reputation.
 
-![03-virustotal-detection](images/SOC101/03-virustotal-detection.png)
-![04-virustotal-details](images/SOC101/04-virustotal-details.png)
+<img width="1908" height="966" alt="03-virustotal-detection" src="https://github.com/user-attachments/assets/92b63d25-f4e3-4caf-afaa-43631da68d82" />
+
+<img width="1914" height="941" alt="04-virustotal-details" src="https://github.com/user-attachments/assets/c070e3a0-08e5-47b3-9a51-a4a2a5dbbd1d" />
+
 
 ### 3. Log Analysis
 
 A Log Management search for `http://nuangaybantiep.xyz` found one proxy event: an allowed GET from `172.16.17.88:39483` to `192.64.119.190:80`. The process was `chrome.exe` with parent `explorer.exe`, meaning a user opened the link in the browser rather than an automated scanner fetching it. An internal device reached the URL, so the playbook answer is **Accessed**.
 
-![05-logs-proxy-c2-access](images/SOC101/05-logs-proxy-c2-access.png)
+<img width="1544" height="758" alt="05-logs-proxy-c2-access" src="https://github.com/user-attachments/assets/4a97b423-b917-4a77-9007-03e75f2cc875" />
+
 
 ### 4. Verdict Reasoning
 
