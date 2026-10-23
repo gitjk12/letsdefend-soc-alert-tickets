@@ -1,4 +1,4 @@
-# SOCXXX – Rule Name
+# SOC136 – Data Leak via Mailbox Forwarding Detected
 
 **Platform:** LetsDefend | **Severity:** High | **Classification:** True Positive | **Date:** March 7, 2021
 **Sender:** `katharine@letsdefend.io` | **Recipient:** `katharine.isabell@yandex.ru` | **[SMTP Address]:** `172.16.20.3`
