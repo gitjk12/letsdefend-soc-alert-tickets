@@ -18,7 +18,7 @@ An email was sent from katharine@letsdefend.io to katharine.isabell@yandex.ru co
 
 | Time (alert) | Event |
 |--------------|---------------------------------------------------------------------------------------------|
-| 17:31:39     | Email from '172.16.20.3' to 'katharine.isabell@yandex.ru' containing data leak, blocked\*   |
+| 17:31:39     | Email from `172.16.20.3` to `katharine.isabell@yandex.ru` containing data leak, blocked\*   |
 
 ## Investigation
 
