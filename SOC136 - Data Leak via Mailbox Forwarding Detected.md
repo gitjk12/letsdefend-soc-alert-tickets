@@ -46,6 +46,7 @@ The body reads "root:Q@6PY4jF john:4\@sMpH/ bill:Pxt5\p6V admin:Y[H6mBu_".
 <img width="1318" height="633" alt="04-endpoint-terminal-history" src="https://github.com/user-attachments/assets/a9024f86-c71f-4f99-af69-09742aba09bb" />
 
 
+
  - Last login predates the email by a week.
  - Checked browser history and terminal history and found no activity near March 7.
 
