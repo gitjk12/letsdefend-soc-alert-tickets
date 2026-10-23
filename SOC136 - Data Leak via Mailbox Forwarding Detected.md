@@ -56,7 +56,9 @@ The body reads "root:Q@6PY4jF john:4\@sMpH/ bill:Pxt5\p6V admin:Y[H6mBu_".
 
 | Clue | Meaning |
 |------|---------|
-|      |         |
+| Outbound Email to Foreign Service | Outside Attacker, Russia particularly has historically been tied to hostile cyber operations targeting US infrastructure |
+| Login Time Discrepancy | Email was sent a week after last login |
+| Suspicious Email Body | Login details transmitted through email from a non privileged account outbound |
 
 ## Artifacts
 
@@ -64,7 +66,10 @@ The body reads "root:Q@6PY4jF john:4\@sMpH/ bill:Pxt5\p6V admin:Y[H6mBu_".
 
 | Type | Indicator |
 |------|-----------|
-|      |           |
+| Sender Address  | `katharine@letsdefend.io` |
+| SMTP IP | `172.16.20.3` |
+| Recipient Address | `katharine.isabell@yandex.ru` |
+| Email Body | `root:Q@6PY4jF john:4\@sMpH/ bill:Pxt5\p6V admin:Y[H6mBu_`
 
 ## Response and Recommendations
 
