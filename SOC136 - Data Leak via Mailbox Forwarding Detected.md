@@ -30,12 +30,24 @@ An email was sent from katharine@letsdefend.io to katharine.isabell@yandex.ru co
 - **Subject:** `Blank`
 - **Device Action:** Blocked
 
-### 2. [Evidence Area] Analysis
+### 2. Email Analysis
 
-<!-- One section per thing you checked: email, payload, logs, endpoint, IP reputation, file hash.
-     Show the evidence first, then say what it means. Note what each check can't prove. -->
+<img width="1259" height="675" alt="02-email-contents" src="https://github.com/user-attachments/assets/bd23940f-df8d-49ea-95b0-57f331df9109" />
 
-### 3. [Evidence Area] Analysis
+The body reads "root:Q@6PY4jF john:4\@sMpH/ bill:Pxt5\p6V admin:Y[H6mBu_". 
+- The message has no greeting or signs of normal conversation.
+- It merely contains username/password combinations, some being privileged, which Katharine would likely not send to anyone, let alone a foreign domain.
+- Domain is foreign and outside the organization.
+
+### 3. Endpoint Data
+
+<img width="1385" height="678" alt="ja" src="https://github.com/user-attachments/assets/d5b3ce40-b419-462a-bd2e-d4320618b791" />
+<img width="1324" height="461" alt="03-browser-history" src="https://github.com/user-attachments/assets/d1285ee7-241a-4b4a-a96d-a13424cd1035" />
+<img width="1318" height="633" alt="04-endpoint-terminal-history" src="https://github.com/user-attachments/assets/a9024f86-c71f-4f99-af69-09742aba09bb" />
+
+
+ - Last login predates the email by a week.
+ - Checked browser history and terminal history and found no activity near March 7.
 
 ### 4. Verdict Reasoning
 
