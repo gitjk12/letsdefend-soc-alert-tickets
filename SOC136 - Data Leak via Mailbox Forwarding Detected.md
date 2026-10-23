@@ -56,9 +56,9 @@ The body reads "root:Q@6PY4jF john:4\@sMpH/ bill:Pxt5\p6V admin:Y[H6mBu_".
 
 | Clue | Meaning |
 |------|---------|
-| Outbound Email to Foreign Service | Outside Attacker, Russia particularly has historically been tied to hostile cyber operations targeting US infrastructure |
-| Login Time Discrepancy | Email was sent a week after last login |
-| Suspicious Email Body | Login details transmitted through email from a non privileged account outbound |
+| Outbound Email to Foreign Service | Outside address, Russia particularly has historically been tied to hostile cyber operations targeting US infrastructure. |
+| Login Time Discrepancy | Email was sent a week after last login - Katharine most likely did not send it herself. |
+| Suspicious Email Body | Cleartext details transmitted by email to foreign address is highly suspicious, especially since two accounts are high-privileged. |
 
 ## Artifacts
 
@@ -73,10 +73,10 @@ The body reads "root:Q@6PY4jF john:4\@sMpH/ bill:Pxt5\p6V admin:Y[H6mBu_".
 
 ## Response and Recommendations
 
-<!-- What was done (containment, deletion, or none needed and why), then what should happen next. -->
+Message was blocked and never reached `Katherine.isabell@yandex.ru`.
 
 ## Conclusion
 
-<!-- Verdict in bold, then 1–2 sentences restating the key evidence. -->
+**True Positive.** An email with highly sensitive login credentials was blocked from being sent to `katharine.isabell@yandex.ru`. No compromise occurred in this ticket. 
 
-**MITRE ATT&CK:**
+**MITRE ATT&CK:** T1114.003(Email Collection: Email Forwarding Rule)
