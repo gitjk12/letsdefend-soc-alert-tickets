@@ -7,7 +7,8 @@
 
 An external sender emailed a password-protected attachment to an internal user under a COVID-19 vaccine lure. Multiple security vendors flag the attachment as malware or phishing, and the sending IP does not belong to the sender domain's mail provider. The email security gateway blocked the message before delivery, so the alert was closed as a true positive with no mailbox cleanup required.
 
-![01-alert-details](PASTE-IMAGE-URL)
+<img width="1647" height="378" alt="01-alert-details" src="https://github.com/user-attachments/assets/d272312c-cee6-4e6d-942a-a5f59648d615" />
+
 
 ## The Attack
 
@@ -37,7 +38,8 @@ An external sender emailed a password-protected attachment to an internal user u
 
 ### 2. Email Analysis
 
-![02-email-contents](PASTE-IMAGE-URL)
+<img width="922" height="661" alt="02-email-contents" src="https://github.com/user-attachments/assets/c641473f-075c-425b-86de-6f96ca7ef2a6" />
+
 
 The body reads "Hey, did you read breaking news about Covid-19. Open it now!" followed by the password `infected`.
 
@@ -47,7 +49,8 @@ The body reads "Hey, did you read breaking news about Covid-19. Open it now!" fo
 
 ### 3. Sender IP Analysis
 
-![03-mx-lookup](PASTE-IMAGE-URL)
+<img width="1678" height="857" alt="03-mx-lookup" src="https://github.com/user-attachments/assets/1fc0c623-52dc-43c9-a4b7-34c86e3a6b67" />
+
 
 An MX lookup on `cmail.carleton.ca` shows the domain's mail is hosted by Microsoft 365:
 
@@ -65,7 +68,8 @@ The same lookup shows the domain publishes a DMARC record but doesn't enforce a 
 
 ### 4. Attachment Analysis
 
-![04-virustotal-detection](PASTE-IMAGE-URL)
+<img width="1913" height="976" alt="04-virustotal-detection" src="https://github.com/user-attachments/assets/587ac8f3-14b5-425e-ab05-3328b5aa814b" />
+
 
 - **Attachment MD5:** `72c812cf21909a48eb9cceb9e04b865d`
 - **Archive password:** `infected`
