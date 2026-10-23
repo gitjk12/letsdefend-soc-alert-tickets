@@ -28,7 +28,7 @@ An email was sent from katharine@letsdefend.io to katharine.isabell@yandex.ru co
 - **Recipient:** `katharine.isabell@yandex.ru`
 - **SMTP Address:** `172.16.20.3`
 - **Subject:** `Blank`
-- **Device Action:** Blocked
+- **Device Action:** `Blocked`
 
 ### 2. Email Analysis
 
