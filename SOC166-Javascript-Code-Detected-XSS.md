@@ -6,8 +6,8 @@
 ## Summary
 
 An external IP sent a series of cross-site scripting (XSS) payloads to the `q` search parameter on WebServer1002. Every payload returned an empty response (0 bytes), so no script was reflected back onto a page. The attack was malicious but **unsuccessful**, so no Tier 2 escalation was needed.
+<img width="1632" height="346" alt="01-alert-details" src="https://github.com/user-attachments/assets/65b563e0-68fb-4e1c-8123-ed4c2b5b891a" />
 
-![01-alert-details](01-alert-details.png)
 
 ## The Attack
 
@@ -34,13 +34,15 @@ An external IP sent a series of cross-site scripting (XSS) payloads to the `q` s
 
 The attacker first browsed the homepage and About Us page, then ran a normal search for `test`, all returning real content with 200. Next came five XSS payloads in about ten minutes, each returning **0 bytes**. Since the server sent back nothing, there was no page for the script to run in. The varied payloads show deliberate probing.
 
-![02-log-management](02-log-management.png)
+<img width="1571" height="529" alt="02-log-management" src="https://github.com/user-attachments/assets/c8434f5e-bc58-42dc-80f2-bf9775e96431" />
+
 
 ### 2. Threat Intelligence
 
 VirusTotal shows `112.85.42.13` on **AS4837 (China Unicom)** with 0/92 detections, one "suspicious" rating, and a community score of −15. The request content is the stronger evidence.
 
-![03-virustotal-ip](03-virustotal-ip.png)
+<img width="1913" height="1014" alt="03-virustotal-ip" src="https://github.com/user-attachments/assets/91507971-b7cc-431e-bbe5-052c5ee58459" />
+
 
 ### 3. Planned Test Check
 
@@ -61,6 +63,7 @@ Block `112.85.42.13` and make sure the search page encodes user input before dis
 
 **True Positive.** An external IP probed WebServer1002's search function with XSS payloads. All returned empty responses, so the attack was malicious but unsuccessful.
 
-![04-playbook-results](04-playbook-results.png)
+<img width="1412" height="305" alt="04-playbook-results" src="https://github.com/user-attachments/assets/d34473c6-e336-410b-909f-e518c3816406" />
+
 
 **MITRE ATT&CK:** T1190 (Exploit Public-Facing Application)
