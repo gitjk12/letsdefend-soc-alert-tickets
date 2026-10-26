@@ -7,7 +7,8 @@
 
 An external IP sent a series of SQL injection probes to the `q` search parameter on WebServer1001. The firewall permitted the traffic, but every injection attempt returned **HTTP 500** with an identical response size, showing the payloads broke the query without returning data. Endpoint history shows no follow-up activity. The attack was malicious but **unsuccessful**, so no Tier 2 escalation or containment was needed.
 
-![01-alert-details](01-alert-details.png)
+<img width="1481" height="352" alt="01-alert-details" src="https://github.com/user-attachments/assets/3ae89412-1199-40e1-a2b6-faec91407046" />
+
 
 ## The Attack
 
@@ -42,13 +43,15 @@ The source `167.99.169.17` is a public IP; the destination `172.16.17.18` is a p
 
 VirusTotal shows `167.99.169.17` on **AS14061 (DigitalOcean)**, a cloud hosting range commonly used for rented attack infrastructure. 2/92 vendors flag it as malicious (phishing) and 2 as suspicious. The lookup reflects current reputation rather than reputation at the time of the attack, so the request content is the stronger evidence.
 
-![02-virustotal-ip](02-virustotal-ip.png)
+<img width="1914" height="1016" alt="02-virustotal-ip" src="https://github.com/user-attachments/assets/e882eaef-9542-412c-9457-3df2fb80b8bd" />
+
 
 ### 3. Log Analysis
 
 A search for `167.99.169.17` as the source returned 6 events. After an initial homepage visit (200, 3547 bytes), the attacker cycled through classic injection tests: a lone quote, tautologies (`OR '1`, `OR 'x'='x`, `OR 1 = 1`), and an `ORDER BY` column-count probe. All five returned **500** with the same **948-byte** response, meaning the server errored out and leaked no data. The sequence of varied payloads within about two minutes points to deliberate probing rather than a user typo.
 
-![03-log-management](03-log-management.png)
+<img width="1649" height="454" alt="03-log-management" src="https://github.com/user-attachments/assets/2e591643-e929-491b-b817-78fe3fc02ebf" />
+
 
 ### 4. Planned Test Check
 
@@ -58,7 +61,8 @@ No email or notice of a scheduled penetration test or vulnerability scan was fou
 
 WebServer1001's terminal history contains only three commands from 01.02.2022 (`cd web-root`, `docker-compose ... build`, `docker-compose ... up`), weeks before the attack. Nothing was executed on the host around the alert time, consistent with a failed attempt.
 
-![04-endpoint-terminal-history](04-endpoint-terminal-history.png)
+<img width="1418" height="823" alt="04-endpoint-terminal-history" src="https://github.com/user-attachments/assets/3f06c8c5-4df6-4f2c-8bfd-eb0382387bfb" />
+
 
 ## Artifacts
 
@@ -76,6 +80,7 @@ No containment was required. Next steps: block `167.99.169.17` at the perimeter 
 
 **True Positive.** An external host on DigitalOcean ran a short SQL injection probing sequence against WebServer1001's search function. Every attempt returned HTTP 500 with no data, and the endpoint shows no post-attack activity. The attack was malicious but unsuccessful.
 
-![05-playbook-results](05-playbook-results.png)
+<img width="1561" height="355" alt="05-playbook-results" src="https://github.com/user-attachments/assets/577b4fb9-15a0-4118-96ff-a681a8fb5b5d" />
+
 
 **MITRE ATT&CK:** T1190 (Exploit Public-Facing Application)
