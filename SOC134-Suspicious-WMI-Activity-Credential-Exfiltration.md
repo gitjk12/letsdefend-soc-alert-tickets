@@ -7,7 +7,8 @@
 
 The alert flagged `exec.bat` for suspicious WMI activity on Desktop-Anderson. The endpoint logs don't show the batch file running, but they reveal an earlier compromise: in December 2020 the host ran recon commands and sent Anderson's and the Administrator's passwords to `161.35.41.241:4444`, a DigitalOcean IP flagged as malicious. The host was accessed and its credentials stolen.
 
-![01-alert-details](01-alert-details.png)
+<img width="1648" height="449" alt="01-alert-details" src="https://github.com/user-attachments/assets/33106613-fb94-4cef-975e-b01e4987a3bd" />
+
 
 ## Investigation
 
@@ -15,13 +16,15 @@ The alert flagged `exec.bat` for suspicious WMI activity on Desktop-Anderson. Th
 
 On Dec 19, 2020 the host ran a standard recon sequence: `hostname`, `net user` and `whoami` (09:15–09:17), then `tasklist`, `net user anderson` and `ping 172.16.20.1` (11:18–11:21). The second group lines up with the connections to the attacker IP.
 
-![02-terminal-history](02-terminal-history.png)
+<img width="1468" height="556" alt="02-terminal-history" src="https://github.com/user-attachments/assets/f0d79cc5-5e31-4b4f-8d6e-d8a0d090304c" />
+
 
 ### 2. Network Action
 
 The host connected to `161.35.41.241` every minute from 11:18 to 11:21, the same window as the recon commands. The other destinations match normal browsing (TechCrunch, GitHub).
 
-![03-network-action](03-network-action.png)
+<img width="1390" height="617" alt="03-network-action" src="https://github.com/user-attachments/assets/b3f0f6f6-3901-40c7-b2db-3f2337d4f2b4" />
+
 
 ### 3. Proxy Log – Credential Exfiltration
 
@@ -33,15 +36,18 @@ Anderson:ander12son!
 Administrator:mys3r3tP@ss!.
 ```
 
-![04-proxy-log](04-proxy-log.png)
+<img width="1454" height="332" alt="04-proxy-log" src="https://github.com/user-attachments/assets/a82896a8-5724-4101-b592-d1726fa311c5" />
+
 
 ### 4. Threat Intelligence
 
 - **161.35.41.241:** 4/92 vendors on VirusTotal flag it (phishing, malware, malicious). AS14061, DigitalOcean.
 - **exec.bat:** 1/61 detections (Kaspersky: `UDS:Trojan.Script.Agent`), community score -58.
 
-![05-virustotal-ip](05-virustotal-ip.png)
-![06-virustotal-exec-bat](06-virustotal-exec-bat.png)
+<img width="1916" height="1012" alt="05-virustotal-ip" src="https://github.com/user-attachments/assets/9fd6c313-28b2-4036-a230-fd20f339a882" />
+
+<img width="1915" height="1012" alt="06-virustotal-exec-bat" src="https://github.com/user-attachments/assets/119491ac-f891-4fa8-a676-0aea1122ede0" />
+
 
 ### 5. Gaps
 
