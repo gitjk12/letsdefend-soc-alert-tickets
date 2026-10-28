@@ -23,7 +23,8 @@ On Dec 19, 2020 the host ran a standard recon sequence: `hostname`, `net user` a
 
 The host connected to `161.35.41.241` every minute from 11:18 to 11:21, the same window as the recon commands. The other destinations match normal browsing (TechCrunch, GitHub).
 
-<img width="1390" height="617" alt="03-network-action" src="https://github.com/user-attachments/assets/fc8827cb-1f23-479e-9805-d62c983d8b42" />
+<img width="1436" height="622" alt="network" src="https://github.com/user-attachments/assets/ffd0dfec-d3da-428a-ac72-f0f730475242" />
+
 
 
 
