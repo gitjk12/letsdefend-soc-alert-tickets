@@ -6,7 +6,8 @@
 
 The rule fired because the requested URL contained the letters "ls", but they were the end of the word "skills" in a LetsDefend blog search. Logs and browser history show only normal blog browsing, so the alert was closed as a false positive.
 
-![01-alert-details](images/soc167-01-alert-details.png)
+<img width="1651" height="364" alt="soc167-01-alert-details" src="https://github.com/user-attachments/assets/4748304e-8cf8-41e5-992f-b69b738e184e" />
+
 
 ## The Attack
 
@@ -36,9 +37,11 @@ https://letsdefend.io/blog/?s=skills
 
 A Log Management search for `172.16.17.46` returned 7 proxy events, all GET requests to letsdefend.io blog articles on SOC analyst careers, each with HTTP 200 and a normal response size. Browser history on EliotPRD matches the same 7 URLs, showing a user reading articles over about 35 minutes.
 
-![02-browser-history](images/soc167-02-browser-history.png)
+<img width="1064" height="409" alt="soc167-02-browser-history" src="https://github.com/user-attachments/assets/408faa44-cdc5-4fb2-9175-77ce100598bf" />
 
-![03-logs-source-address](images/soc167-03-logs-source-address.png)
+
+<img width="1684" height="623" alt="soc167-03-logs-source-address" src="https://github.com/user-attachments/assets/ab6e8ffb-e4f7-4229-ae4c-bdbe09e76d9c" />
+
 
 ### 3. Verdict Reasoning
 
