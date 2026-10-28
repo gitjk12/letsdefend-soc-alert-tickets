@@ -37,6 +37,7 @@ Administrator:mys3r3tP@ss!.
 ```
 
 <img width="1454" height="332" alt="04-proxy-log" src="https://github.com/user-attachments/assets/a82896a8-5724-4101-b592-d1726fa311c5" />
+<img width="1700" height="806" alt="base64" src="https://github.com/user-attachments/assets/818fcc4d-0e35-4272-a656-d8d64dae365d" />
 
 
 ### 4. Threat Intelligence
