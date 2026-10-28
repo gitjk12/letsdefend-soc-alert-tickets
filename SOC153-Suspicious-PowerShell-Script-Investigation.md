@@ -6,7 +6,8 @@
 
 A user on host Tony downloaded a PowerShell script from an Amazon S3 bucket and ran it, and EDR detected it without blocking it. The script downloaded a second-stage payload from `kionagranada.com`, and the firewall allowed the connection, so the alert was closed as a true positive and the host was contained.
 
-![01-alert-details](images/01-alert-details.png)
+<img width="1610" height="362" alt="01-alert-details" src="https://github.com/user-attachments/assets/2127cca1-afe5-4bf5-b562-734641797603" />
+
 
 ## The Attack
 
@@ -42,7 +43,8 @@ The file sat in the user's Downloads folder, and EDR only detected it, so it was
 
 VirusTotal flags the hash as malicious with 34 of 61 vendors. The popular label is `trojan.powershell/boxter`, categorized as trojan, downloader and dropper, and several vendors attribute it to Azorult. VirusTotal knows the file as `agent3.ps1`, so it was renamed before delivery. Behavior tags include debugger detection, long sleeps and network adapter checks, which are common sandbox evasion tricks.
 
-![02-virustotal-hash](images/02-virustotal-hash.png)
+<img width="1912" height="977" alt="02-virustotal-hash" src="https://github.com/user-attachments/assets/87b8b70e-512d-428e-ac4b-181f67104f9f" />
+
 
 ### 3. Script Analysis
 
@@ -58,7 +60,8 @@ The PowerShell script block log (Event ID 4104) captured the command the script 
 
 No legitimate user downloads and executes scripts from an unknown domain in one line, so the command is malicious.
 
-![03-logs-powershell-script-block](images/03-logs-powershell-script-block.png)
+<img width="1571" height="569" alt="03-logs-powershell-script-block" src="https://github.com/user-attachments/assets/41a4aa0a-2389-46f2-9a19-60e3b0398d9e" />
+
 
 ### 4. Log Analysis
 
@@ -66,7 +69,8 @@ Browser history shows the download source: `payload_1.ps1` was fetched from `htt
 
 A Log Management search for `kionagranada.com` returned a Sysmon DNS query (Event ID 22) from `powershell.exe` resolving the domain to `161.22.46.148`. A search for that IP returned a firewall log showing `172.16.17.206:49848 → 161.22.46.148:443` with status SUCCESS. The parent process was `explorer.exe`, meaning the user started the script manually.
 
-![04-logs-dns-and-firewall](images/04-logs-dns-and-firewall.png)
+<img width="3049" height="2475" alt="04-logs-dns-and-firewall" src="https://github.com/user-attachments/assets/172b2d97-592a-44b0-a250-ae5dd6a728a2" />
+
 
 ### 5. Verdict Reasoning
 
