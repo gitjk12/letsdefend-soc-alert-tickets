@@ -6,7 +6,8 @@
 
 An external IP sent the same POST request to `https://172.16.17.15/get_user_info/` five times. The URL never changed; only the `user_id` POST parameter did, going from 1 to 5. The server answered with HTTP 200, meaning it returned user records without checking whether the requester was allowed to see them. This is an Insecure Direct Object Reference (IDOR): the attacker read other users' data by changing an ID.
 
-![01-alert-details](screenshots/01-alert-details.png)
+<img width="1573" height="476" alt="01-alert-details" src="https://github.com/user-attachments/assets/6dc929c5-236d-4af2-931e-7b511e3b24dd" />
+
 
 ## Timeline
 
@@ -26,14 +27,17 @@ An external IP sent the same POST request to `https://172.16.17.15/get_user_info
 
 A search for `134.209.118.137` returned five firewall events, all allowed, to `172.16.17.15:443`. All five requests go to the same URL, `https://172.16.17.15/get_user_info/`; only the `user_id` in the POST body changes, stepping through accounts in order. The User-Agent (MSIE 6.0 on Windows XP) is outdated and likely spoofed by a script.
 
-![02-logs-requests](screenshots/02-logs-requests.png)
+<img width="1565" height="792" alt="02-logs-requests" src="https://github.com/user-attachments/assets/02f26df6-8bc9-4489-83ff-aebafec47406" />
+
 
 ### 2. Request Analysis
 
 The POST parameters show the ID being changed, and the server returned HTTP 200 instead of refusing with 401 or 403. A successful response for IDs that don't belong to the requester means the attack worked.
 
-![03-post-parameters](screenshots/03-post-parameters.png)
-![04-response-status](screenshots/04-response-status.png)
+<img width="808" height="532" alt="03-post-parameters" src="https://github.com/user-attachments/assets/a03d2690-70bc-462b-9d47-e09f6d889838" />
+
+<img width="849" height="409" alt="04-response-status" src="https://github.com/user-attachments/assets/b50556c3-b0cb-415c-80a7-4dd9ab17651d" />
+
 
 ## Playbook Answers
 
@@ -46,7 +50,8 @@ The POST parameters show the ID being changed, and the server returned HTTP 200 
 | Was the attack successful? | Yes |
 | Tier 2 escalation? | Yes |
 
-![05-playbook-answers](screenshots/05-playbook-answers.png)
+<img width="1469" height="451" alt="05-playbook-answers" src="https://github.com/user-attachments/assets/b9c2b092-359d-4445-a4ad-c8deebbba774" />
+
 
 ## Artifacts
 
