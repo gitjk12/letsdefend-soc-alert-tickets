@@ -6,7 +6,8 @@
 
 An obfuscated PowerShell command on Jack's host downloaded and ran a batch file, `a.bat`, from a shortened link. About 45 minutes later, PowerShell on the same host requested an executable, `OBBBOP.exe`, from a blacklisted IP, and the proxy allowed it. This is a two-stage infection: a small script first, then a second payload.
 
-![01-alert-details](screenshots/01-alert-details.png)
+<img width="1596" height="569" alt="01-alert-details" src="https://github.com/user-attachments/assets/f1938b55-7ba6-4e15-b4ce-21a734596c6b" />
+
 
 ## Timeline
 
@@ -33,7 +34,7 @@ The User-Agent shows the request came from PowerShell, not a browser. Users don'
 
 A Log Management search for `193.239.147.32` returned two events from `172.16.17.21`: a firewall connection to port 80 at 03:02:19 and a proxy `GET` for `OBBBOP.exe` at 03:02:59. Jack's host reached the malicious IP, so the playbook answer is **Accessed**.
 
-![02-logs-proxy-firewall](screenshots/02-logs-proxy-firewall.png)
+<img width="1590" height="794" alt="02-logs-proxy-firewall" src="https://github.com/user-attachments/assets/cefaa108-4c48-4bc0-a1f9-8df5999ca095" />
 
 ### 3. Endpoint Analysis
 
@@ -41,13 +42,15 @@ Terminal History shows what happened before the alert. The first command is deli
 
 The `OBBBOP.exe` request comes after `a.bat` ran and uses PowerShell, which fits `a.bat` fetching the second stage. Terminal History doesn't show `OBBBOP.exe` executing.
 
-![03-endpoint-terminal-history](screenshots/03-endpoint-terminal-history.png)
+<img width="1242" height="537" alt="03-endpoint-terminal-history" src="https://github.com/user-attachments/assets/fc0add39-1488-4739-81f1-670b23846079" />
+
 
 ### 4. IP Analysis
 
 VirusTotal flags `193.239.147.32` 13/92 (Orange, AS5511, GB), with malicious, malware, and phishing labels from vendors including ESET, Fortinet, Sophos, and BitDefender.
 
-![04-virustotal-ip](screenshots/04-virustotal-ip.png)
+<img width="1909" height="983" alt="04-virustotal-ip" src="https://github.com/user-attachments/assets/0f2dc63c-c65a-4080-9e2e-3522b4ebc3a4" />
+
 
 ## Playbook Answers
 
@@ -56,7 +59,8 @@ VirusTotal flags `193.239.147.32` 13/92 (Orange, AS5511, GB), with malicious, ma
 | Has anyone accessed the IP/URL/domain? | Accessed |
 | Analyze URL address | Malicious |
 
-![05-playbook-answers](screenshots/05-playbook-answers.png)
+<img width="1540" height="433" alt="05-playbook-answers" src="https://github.com/user-attachments/assets/421f2944-0804-48ef-b8a2-9b79f83766c4" />
+
 
 ## Artifacts
 
