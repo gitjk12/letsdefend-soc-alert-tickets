@@ -6,7 +6,8 @@
 
 An external IP sent five POST requests to `/get_user_info/`, changing `user_id` from 1 to 5 each time. The server answered with HTTP 200, meaning it returned user records without checking whether the requester was allowed to see them. This is an Insecure Direct Object Reference (IDOR): the attacker read other users' data by changing an ID.
 
-![01-alert-details](screenshots/01-alert-details.png)
+<img width="1573" height="476" alt="01-alert-details" src="https://github.com/user-attachments/assets/7599fdad-14b4-4a47-919b-b080653b892c" />
+
 
 ## Timeline
 
@@ -26,14 +27,17 @@ An external IP sent five POST requests to `/get_user_info/`, changing `user_id` 
 
 A search for `134.209.118.137` returned five firewall events, all allowed, to `172.16.17.15:443`. Each request uses the same endpoint and changes only `user_id`, stepping through accounts in order. The User-Agent (MSIE 6.0 on Windows XP) is outdated and likely spoofed by a script.
 
-![02-logs-requests](screenshots/02-logs-requests.png)
+<img width="1565" height="792" alt="02-logs-requests" src="https://github.com/user-attachments/assets/5f15f0e0-8392-45b3-960a-4bb5f3e0bfe2" />
+
 
 ### 2. Request Analysis
 
 The POST parameters show the ID being changed, and the server returned HTTP 200 instead of refusing with 401 or 403. A successful response for IDs that don't belong to the requester means the attack worked.
 
-![03-post-parameters](screenshots/03-post-parameters.png)
-![04-response-status](screenshots/04-response-status.png)
+<img width="808" height="532" alt="03-post-parameters" src="https://github.com/user-attachments/assets/f14667c7-148f-4031-baed-39b7ffe8f61c" />
+
+<img width="849" height="409" alt="04-response-status" src="https://github.com/user-attachments/assets/0d6f8761-9dd3-4e67-8c4f-27a0f6fe6e56" />
+
 
 ## Playbook Answers
 
@@ -46,7 +50,8 @@ The POST parameters show the ID being changed, and the server returned HTTP 200 
 | Was the attack successful? | Yes |
 | Tier 2 escalation? | Yes |
 
-![05-playbook-answers](screenshots/05-playbook-answers.png)
+<img width="1469" height="451" alt="05-playbook-answers" src="https://github.com/user-attachments/assets/8a6de404-8337-464d-8195-71e27e10ab52" />
+
 
 ## Artifacts
 
