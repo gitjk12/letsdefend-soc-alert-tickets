@@ -4,8 +4,7 @@
 
 ## Summary
 
-An external IP sent the same POST request to `https://172.16.17.15/get_user_info/` five times. The URL never changed; only the `user_id` POST parameter did, going from 1 to 5. The server answered with HTTP 200, meaning it returned user records without checking whether the requester was allowed to see them. This is an Insecure Direct Object Reference (IDOR): the attacker read other users' data by changing an ID.
-
+An external IP sent five different POST requests to the same URL, https://172.16.17.15/get_user_info/. Each request asked for a different user, with user_id going from 1 to 5. The server answered with HTTP 200, meaning it returned user records without checking whether the requester was allowed to see them. This is an Insecure Direct Object Reference (IDOR): the attacker read other users' data by changing an ID.
 <img width="1573" height="476" alt="01-alert-details" src="https://github.com/user-attachments/assets/6dc929c5-236d-4af2-931e-7b511e3b24dd" />
 
 
