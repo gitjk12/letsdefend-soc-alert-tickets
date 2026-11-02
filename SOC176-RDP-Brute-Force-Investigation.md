@@ -6,7 +6,8 @@
 
 An external IP brute-forced RDP on Matthew's host, cycling through common usernames (`sysadmin`, `admin`, `guest`) before hitting the valid account `Matthew`. After a series of failed attempts, it logged in successfully at 03:44:59. The firewall allowed the traffic, so the attacker gained an interactive session on the host.
 
-![01-alert-details](screenshots/01-alert-details.png)
+<img width="1555" height="448" alt="01-alert-details" src="https://github.com/user-attachments/assets/91db5c86-0b4a-4926-a4ce-dea69f6c6375" />
+
 
 ## Timeline
 
@@ -22,13 +23,16 @@ An external IP brute-forced RDP on Matthew's host, cycling through common userna
 
 **Logs:** A search for `218.92.0.56` returned 30 events, all to `172.16.17.148:3389`. Firewall entries confirm the RDP traffic was allowed. The error code change on `Matthew` (`0xC000006D` to `0xC000006A`) shows the attacker found a real account, and the 4624 two seconds later confirms the password was guessed. Only one target host was involved.
 
-![02-logs-failed-logons](screenshots/02-logs-failed-logons.png)
-![03-logs-failed-logons-2](screenshots/03-logs-failed-logons-2.png)
-![04-logs-successful-logon](screenshots/04-logs-successful-logon.png)
+<img width="1551" height="770" alt="02-logs-failed-logons" src="https://github.com/user-attachments/assets/b34e293f-661a-46ca-989b-e2804aedb9b6" />
+
+<img width="1536" height="638" alt="03-logs-failed-logons-2" src="https://github.com/user-attachments/assets/43fa22c1-08af-4e9d-8150-18cb3101341b" />
+<img width="1366" height="349" alt="04-logs-successful-logon" src="https://github.com/user-attachments/assets/8e17ecdc-3bd8-4383-9ead-1c5976d8980a" />
+
 
 **IP reputation:** VirusTotal flags `218.92.0.56` 5/92 (Chinanet, AS4134, CN), with malicious, malware, and phishing labels.
 
-![05-virustotal-ip](screenshots/05-virustotal-ip.png)
+<img width="1916" height="987" alt="05-virustotal-ip" src="https://github.com/user-attachments/assets/68a80444-162c-4458-b972-9a04de959c82" />
+
 
 ## Artifacts
 
