@@ -6,7 +6,8 @@
 
 An IP in Vietnam tried to log in to the company VPN as Monica. The password was accepted, but all three attempts failed at the one-time code (OTP) step, so MFA blocked access. Monica's credentials are compromised, but the attacker never got in.
 
-![01-alert-details](screenshots/01-alert-details.png)
+<img width="1553" height="496" alt="01-alert-details" src="https://github.com/user-attachments/assets/ae9b7ba4-d0cd-4458-a49e-3cd97a6ea95a" />
+
 
 ## Timeline
 
@@ -25,13 +26,15 @@ An IP in Vietnam tried to log in to the company VPN as Monica. The password was 
 
 A search for `113.161.158.12` returned 21 firewall and proxy events. Each login appears twice: a proxy `POST` to `logon.html` and a firewall entry with the result. "Incorrect OTP Code" only appears after a correct password, so the attacker knows Monica's password but not her second factor. No successful login was recorded.
 
-![02-logs-otp-failures](screenshots/02-logs-otp-failures.png)
+<img width="1535" height="671" alt="02-logs-otp-failures" src="https://github.com/user-attachments/assets/6f0660b1-6b27-44b2-afdc-9654a062d19a" />
+
 
 ### 2. IP Analysis
 
 `113.161.158.12` is an external IP owned by VNPT Corp (AS45899), a Vietnamese ISP. VirusTotal flags it 4/92: BitDefender and G-Data (Phishing), Fortinet (Malware), and SOCRadar (Malicious), with alphaMountain.ai rating it Suspicious. The community score is -3. The low count still matters: the IP has a history of abuse reports, and the login came from a country Monica isn't authorized to connect from.
 
-![03-virustotal-ip](screenshots/03-virustotal-ip.png)
+<img width="1907" height="955" alt="03-virustotal-ip" src="https://github.com/user-attachments/assets/1f44eab4-a110-4931-a1ac-7803f1af66eb" />
+
 
 ## Artifacts
 
