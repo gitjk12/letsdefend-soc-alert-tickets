@@ -6,7 +6,8 @@
 
 PowerShell on Jack's host requested an executable, `OBBBOP.exe`, from a blacklisted IP. The proxy allowed the request, so the file was likely downloaded to the host.
 
-![01-alert-details](screenshots/01-alert-details.png)
+<img width="1596" height="569" alt="01-alert-details" src="https://github.com/user-attachments/assets/9803b145-90bb-47a8-a357-9026885449d7" />
+
 
 ## Investigation
 
@@ -31,13 +32,15 @@ The firewall entry shows the host opening the connection, and the proxy entry sh
 
 *The alert shows 11:02 (+03:00); the alert and Log Management display time differently.
 
-![02-logs-proxy-firewall](screenshots/02-logs-proxy-firewall.png)
+<img width="1590" height="794" alt="02-logs-proxy-firewall" src="https://github.com/user-attachments/assets/65131d70-ff77-4dd1-ba2a-17c15b968de6" />
+
 
 ### 3. IP Analysis
 
 VirusTotal flags `193.239.147.32` 13/92 (Orange, AS5511, GB), with malicious, malware, and phishing labels from vendors including ESET, Fortinet, Sophos, and BitDefender.
 
-![03-virustotal-ip](screenshots/03-virustotal-ip.png)
+<img width="1909" height="983" alt="03-virustotal-ip" src="https://github.com/user-attachments/assets/47432407-204e-44a1-8a68-03b7cd9b3160" />
+
 
 ## Playbook Answers
 
@@ -46,7 +49,8 @@ VirusTotal flags `193.239.147.32` 13/92 (Orange, AS5511, GB), with malicious, ma
 | Has anyone accessed the IP/URL/domain? | Accessed |
 | Analyze URL address | Malicious |
 
-![04-playbook-answers](screenshots/04-playbook-answers.png)
+<img width="1540" height="433" alt="04-playbook-answers" src="https://github.com/user-attachments/assets/edb13898-07b2-48e6-9d94-4084093389b2" />
+
 
 ## Artifacts
 
