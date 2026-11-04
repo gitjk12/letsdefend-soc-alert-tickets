@@ -12,17 +12,21 @@ An external IP sent a ToolShell exploit request to on-prem SharePoint server **S
 - **Referer:** `/_layouts/SignOut.aspx`, the spoofed header that bypasses authentication
 - **Device Action:** Allowed
 
-![Alert details](screenshots/01-alert-details.png)
+<img width="1520" height="586" alt="01-alert-details" src="https://github.com/user-attachments/assets/02aba0ba-b4c2-4f77-8df0-bb2701443cf9" />
+
 
 ## Investigation
 **Log Management:** One proxy event from 107.191.58.76:25332 → 172.16.20.17:443 matching the exploit URL. The Referer is set to SignOut.aspx, the ToolShell auth-bypass indicator.
 
-![Log management](screenshots/02-log-management.png)
-![Referer header](screenshots/04-referer-signout.png)
+<img width="1504" height="795" alt="02-log-management" src="https://github.com/user-attachments/assets/fe9a3458-9f0a-4b1c-aa4c-ff3ba29e4f7f" />
+
+<img width="1179" height="726" alt="04-referer-signout" src="https://github.com/user-attachments/assets/37fd4536-692a-4b37-8b16-b9823055aff8" />
+
 
 **VirusTotal (IP):** 107.191.58.76 is flagged by 8/92 vendors (malware, phishing, malicious); community score −9.
 
-![VirusTotal IP](screenshots/03-virustotal-ip.png)
+<img width="1915" height="987" alt="03-virustotal-ip" src="https://github.com/user-attachments/assets/3526a297-dfee-4773-b907-29a28c53671d" />
+
 
 **Endpoint (SharePoint01):** The IIS worker process spawned a post-exploitation chain within seconds of the request.
 
@@ -35,10 +39,14 @@ An external IP sent a ToolShell exploit request to on-prem SharePoint server **S
 
 At 13:08:04, SharePoint01 made an outbound connection back to 107.191.58.76.
 
-![Encoded PowerShell](screenshots/05-encoded-powershell.png)
-![Process tree](screenshots/06-process-tree.png)
-![Terminal history](screenshots/08-terminal-history.png)
-![Network actions](screenshots/07-network-actions.png)
+<img width="1222" height="568" alt="05-encoded-powershell" src="https://github.com/user-attachments/assets/a97f88e2-1337-4640-b089-24256ef0914a" />
+
+<img width="1039" height="507" alt="06-process-tree" src="https://github.com/user-attachments/assets/c7b1228c-8ee5-49ce-850d-713c938256be" />
+
+<img width="1052" height="450" alt="08-terminal-history" src="https://github.com/user-attachments/assets/ef481ab9-82d6-47cb-83f1-4ee7fe3a9e3a" />
+
+<img width="1190" height="556" alt="07-network-actions" src="https://github.com/user-attachments/assets/65fc8fcd-6da0-4d87-ae09-9c82fda6b280" />
+
 
 ## Conclusion
 CVE-2025-53770 (ToolShell) was exploited successfully. The attacker bypassed authentication, achieved RCE through unsafe deserialization, dropped the `spinstall0.aspx` web shell, compiled a payload, and stole the ASP.NET machine keys. Stolen keys allow forged requests and continued access even after patching.
